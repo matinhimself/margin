@@ -1,0 +1,14 @@
+.DS_Store
+backend/data/
+backend/library
+app/.build/
+app/.swiftpm/
+app/build/
+**/xcuserdata/
+.env
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+__pycache__/
+content/private/
+deploy/data/

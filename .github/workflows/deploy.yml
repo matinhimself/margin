@@ -1,0 +1,65 @@
+name: Deploy backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'deploy/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: margin-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://books.0xff.shop:8443
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+      - name: Verify backend
+        working-directory: backend
+        run: |
+          go test -race ./...
+          go vet ./...
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+      - name: Transfer deployment files
+        run: |
+          rsync -az --delete --exclude data --exclude library --exclude '*_test.go' \
+            -e 'ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' \
+            backend/ margin-deploy@69.12.83.46:/srv/margin/backend/
+          rsync -az -e 'ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' \
+            deploy/compose.yaml deploy/Caddyfile deploy/deploy.sh \
+            margin-deploy@69.12.83.46:/srv/margin/deploy/
+      - name: Deploy and verify
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes margin-deploy@69.12.83.46 \
+            'bash /srv/margin/deploy/deploy.sh'
+          curl --fail --silent --show-error --retry 5 --retry-delay 5 --retry-all-errors \
+            https://books.0xff.shop:8443/healthz
+      - name: Remove SSH credentials
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519

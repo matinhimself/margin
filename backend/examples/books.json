@@ -1,0 +1,62 @@
+[
+  {
+    "id": "make-room-for-focus", "title": "Make Room for Focus", "author": "Margin Studio",
+    "subtitle": "A quieter approach to doing what matters", "category": "Productivity", "color": "#DCE9C9", "minutes": 4,
+    "synopsis": "Attention is a limited space. This original short read explores how to protect a little of it, choose a meaningful task, and close the day without carrying every unfinished thought into the evening.",
+    "sections": [
+      {"title": "Give your attention a place to land", "body": "A clear desk can help, but a clear intention helps more. Before you open another tab, write one sentence describing the work you want to move forward. Make it concrete enough that another person could recognize when it is done.\n\n‘Work on the project’ leaves every decision open. ‘Draft the first three paragraphs’ gives attention a place to land. The smaller sentence does not make the work less ambitious. It makes the next movement visible.\n\nTry this before your next work session: choose a finish line that fits inside thirty minutes. Let the rest of the project wait outside that boundary."},
+      {"title": "Make interruptions easier to postpone", "body": "An interruption often arrives disguised as something you should remember. A message, a useful idea, or an unrelated errand can pull you away because you do not trust yourself to come back to it.\n\nKeep a small ‘later’ list beside your work. When a thought asks for attention, give it one line there. You are not promising to ignore it forever. You are promising to consider it at a better time.\n\nAt the end of the session, review the list. Some items will still matter. Others will have lost their urgency without any action at all."},
+      {"title": "End with a bridge to tomorrow", "body": "Stopping well is part of focusing well. Spend the last two minutes recording where you stopped and the next physical action you would take.\n\nA useful note might say: ‘The outline is finished. Next, find one example for the second section.’ That small bridge saves you from having to reconstruct the entire task tomorrow.\n\nYou do not need to finish everything to finish the day. You need a trustworthy way to begin again."}
+    ]
+  },
+  {
+    "id": "small-steps", "title": "The Practice of Small Steps", "author": "Margin Studio",
+    "subtitle": "Build a rhythm you can return to", "category": "Personal growth", "color": "#F0D5B8", "minutes": 3,
+    "synopsis": "An original field note on making change approachable: lower the cost of beginning, attach a practice to an ordinary moment, and learn to return after a missed day.",
+    "sections": [
+      {"title": "Shrink the beginning", "body": "A useful practice should be easy to begin on an ordinary day. If your plan only works when you are rested, inspired, and free of interruptions, it depends on a rare kind of day.\n\nChoose a minimum version. Read one page. Put on your walking shoes. Write a single honest sentence. A minimum is an invitation to begin, not a ceiling on what you can do.\n\nAfter you start, you may continue. On a difficult day, keeping the small promise is enough."},
+      {"title": "Borrow a moment that already exists", "body": "New routines are easier to find when they have an address. Instead of promising to read ‘sometime,’ place a book beside the cup you use each morning.\n\nName the moment: after the kettle boils, I will read one page. The existing event becomes a reminder that does not require another notification.\n\nNotice whether the pairing fits your real life. If it repeatedly fails, move the practice rather than turning the failure into a judgment about yourself."},
+      {"title": "Practice returning", "body": "A missed day is an event. It does not have to become an identity. When a routine breaks, resist the urge to design a much harder routine as compensation.\n\nReturn to the smallest useful version. Then ask a practical question: what made yesterday difficult? You may need a different time, a shorter session, or a more visible reminder.\n\nConsistency includes recovery. The ability to return is a skill you can practice every time life interrupts the plan."}
+    ]
+  },
+  {
+    "id": "curious-mind", "title": "A More Curious Mind", "author": "Margin Studio",
+    "subtitle": "Better questions for everyday conversations", "category": "Psychology", "color": "#CBDCE8", "minutes": 3,
+    "synopsis": "Curiosity begins when we leave room for an answer we did not expect. These original notes offer three small ways to listen, question an assumption, and keep learning from everyday life.",
+    "sections": [
+      {"title": "Stay with the answer a little longer", "body": "In conversation, it is easy to listen just long enough to find your own story. Someone mentions a difficult trip, and you are already preparing to describe yours.\n\nTry one more question before changing the subject. Ask what surprised them, what felt difficult, or what they would do differently.\n\nYou do not need a clever response to be interested. Often, the most generous response is enough space for the other person to finish the thought."},
+      {"title": "Separate an observation from a story", "body": "‘My colleague did not reply’ is an observation. ‘My colleague does not respect my time’ is a story about that observation. The story may be right, but it is not the only possibility.\n\nWrite down two alternative explanations. Perhaps the message was unclear. Perhaps the person is dealing with something you cannot see.\n\nAlternative explanations do not excuse every behavior. They help you choose a response with more information and less unnecessary certainty."},
+      {"title": "Keep a question instead of a verdict", "body": "At the end of a day, notice one thing you did not understand. Turn it into a question that you can explore tomorrow.\n\nA useful question is specific: ‘Why did that meeting feel easier after we wrote the options down?’ is more inviting than ‘How do meetings work?’\n\nYou do not have to research every question. Keeping a few open can change what you notice. Learning often starts before you find an answer."}
+    ]
+  },
+  {
+    "id": "enough-for-today", "title": "Enough for Today", "author": "Margin Studio",
+    "subtitle": "A thoughtful relationship with your time", "category": "Mindfulness", "color": "#E7CFD4", "minutes": 3,
+    "synopsis": "An original reflection on choosing a realistic day, leaving space between commitments, and recognizing the value of work that does not appear on a checklist.",
+    "sections": [
+      {"title": "Plan for the day you actually have", "body": "A calendar can hold more promises than a person can keep. Before adding another task, count the hours that are already committed. Include travel, meals, and the small transitions between activities.\n\nChoose one outcome that would make the remaining time useful. Treat everything else as a possibility rather than a debt. A realistic plan gives you a chance to experience completion."},
+      {"title": "Leave a little unclaimed space", "body": "Empty time is not always wasted time. A few unclaimed minutes allow a conversation to finish, a walk to take longer, or your attention to settle before the next demand.\n\nTry leaving a small gap between two commitments this week. Notice what the space makes possible. You may find that a less crowded schedule lets you arrive more fully."},
+      {"title": "Notice what the list cannot measure", "body": "Some useful parts of a day do not look productive: helping someone think, changing your mind, resting before you become exhausted.\n\nAlongside your completed tasks, name one thing you cared for. This is not another scoring system. It is a reminder that a life contains more kinds of value than a checklist can describe."}
+    ]
+  },
+  {
+    "id": "ideas-into-action", "title": "Ideas into Action", "author": "Margin Studio",
+    "subtitle": "Learn a little, try a little", "category": "Creativity", "color": "#E8DFB8", "minutes": 3,
+    "synopsis": "Reading can be a beginning. This original short read explores how to turn an interesting idea into a small experiment, notice what happens, and keep what is useful.",
+    "sections": [
+      {"title": "Choose one idea to carry", "body": "After finishing a useful read, you may want to remember everything. Instead, choose one sentence that connects to your current life. Write it in your own words.\n\nThe act of choosing makes the idea personal. Ask where you could try it before the week ends. A small application can teach you more than a large collection of highlights."},
+      {"title": "Make the experiment reversible", "body": "You do not need to reorganize your life to test an idea. Try one meeting without slides, one morning with your phone in another room, or one draft written before checking messages.\n\nName what you hope to learn, and set a short time limit. A reversible experiment gives you permission to discover that an idea does not fit."},
+      {"title": "Reflect before collecting more", "body": "After the experiment, record what happened. What felt easier? What created friction? What would you change next time?\n\nKeep the part that helped, adapt the part that almost helped, and release the rest. Learning becomes useful when it changes your next decision, even in a very small way."}
+    ]
+  },
+  {
+    "id": "better-together", "title": "Better Together", "author": "Margin Studio",
+    "subtitle": "Small ways to make collaboration kinder", "category": "Communication", "color": "#CDCDE5", "minutes": 3,
+    "synopsis": "An original collection of practical notes on making requests clear, sharing unfinished thinking, and ending conversations with a shared understanding of what comes next.",
+    "sections": [
+      {"title": "Make your request easy to understand", "body": "Before sending a request, say what you need, why it matters, and when an answer would help. Separate the essential part from the optional detail.\n\nA clear request respects the other person’s attention. It also makes it easier for them to tell you when a deadline is unrealistic or a different approach would work better."},
+      {"title": "Share the unfinished version", "body": "Waiting until an idea looks complete can make feedback expensive. By then, you may have invested so much that a useful question feels like an obstacle.\n\nShow a sketch while it is still easy to change. Tell the other person what kind of response would help: a missing assumption, a confusing step, or a different possibility. Early feedback works best when its purpose is clear."},
+      {"title": "Close the loop together", "body": "At the end of a conversation, briefly name what was decided and who will do the next thing. Invite the other person to correct your understanding.\n\nThis small check can prevent a surprising amount of confusion. A shared next step is more useful than the feeling that everyone probably agreed."}
+    ]
+  }
+]

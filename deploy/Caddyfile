@@ -1,0 +1,14 @@
+{
+    admin off
+    https_port 8443
+}
+
+books.0xff.shop:8443 {
+    tls {
+        issuer acme {
+            disable_tlsalpn_challenge
+        }
+    }
+    header Cache-Control "no-store"
+    reverse_proxy api:8787
+}

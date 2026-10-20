@@ -1,0 +1,4 @@
+interface:
+  display_name: "PDF to Margin"
+  short_description: "Turn PDF books into grounded Margin summaries"
+  default_prompt: "Use $pdf-to-margin to summarize this PDF book and create an import-ready Margin book with source-page notes."

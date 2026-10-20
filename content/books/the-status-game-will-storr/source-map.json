@@ -1,0 +1,512 @@
+{
+  "book_id": "the-status-game-will-storr",
+  "source": {
+    "filename": "The Status Game On Social Position and How We Use It (Will Storr) (z-library.sk, 1lib.sk, z-lib.sk).epub",
+    "attachment_filename": "c04f7ee6-d010-46c5-a1b3-9946d35cab5d-b1144a0e-0f09-4f24-ae00-720ca9a0d1a8-epub.epub",
+    "sha256": "aa4fbdbc2eafff62eea334b5a50cd53889ed496c2c1cb507e4435edc4088d2ea",
+    "format": "EPUB",
+    "edition": "William Collins, first Great Britain ebook publication 2021; Ebook Edition August 2021; Version 2021-08-25",
+    "ebook_isbn": "9780008354657",
+    "language": "en",
+    "spine_documents": 46,
+    "pdf_pages": null
+  },
+  "scope": "Book-wide thematic summary based on chapter-spanning editorial review; representative substantive passages from every chapter, with full-text review of chapters 5, 11, and 29. Not a line-by-line review of the complete ebook.",
+  "location_convention": "EPUB spine indices are zero-based. Chapter numbers refer to the supplied edition. EPUB hrefs locate the source documents. No PDF or printed page numbers have been fabricated.",
+  "coverage": [
+    {
+      "part": "Prologue",
+      "epub_href": "index_split_005.html",
+      "review": "opening, intermediate, and concluding passages"
+    },
+    {
+      "chapter": 1,
+      "epub_href": "index_split_006.html",
+      "spine_index_zero_based": 7,
+      "title": "The Life and Afterlife of Ben Gunn",
+      "review": "representative substantive passages across chapter",
+      "note": "Local standing and identity in the account of Ben Gunn; distinction between acceptance and respect."
+    },
+    {
+      "chapter": 2,
+      "epub_href": "index_split_007.html",
+      "spine_index_zero_based": 8,
+      "title": "Getting Along, Getting Ahead",
+      "review": "representative substantive passages across chapter",
+      "note": "Belonging, social rank, wellbeing, and the costs of exclusion; health findings are discussed as presented by Storr."
+    },
+    {
+      "chapter": 3,
+      "epub_href": "index_split_008.html",
+      "spine_index_zero_based": 9,
+      "title": "An Imagined World of Symbols",
+      "review": "representative substantive passages across chapter",
+      "note": "Self-serving perception, status symbols, comparison, money, and local social judgements."
+    },
+    {
+      "chapter": 4,
+      "epub_href": "index_split_009.html",
+      "spine_index_zero_based": 10,
+      "title": "An Imagined World of Rules",
+      "review": "representative substantive passages across chapter",
+      "note": "Culture supplies rules and symbols; social learning and internalisation shape the person playing."
+    },
+    {
+      "chapter": 5,
+      "epub_href": "index_split_010.html",
+      "spine_index_zero_based": 11,
+      "title": "The Three Games",
+      "review": "full extracted chapter text",
+      "note": "Dominance, virtue, and success; prestige, reputation, cooperation, and mixed strategies."
+    },
+    {
+      "chapter": 6,
+      "epub_href": "index_split_011.html",
+      "spine_index_zero_based": 12,
+      "title": "Prestige Games",
+      "review": "representative substantive passages across chapter",
+      "note": "Prestige-based imitation, cues for choosing whom to copy, and amplification of attention."
+    },
+    {
+      "chapter": 7,
+      "epub_href": "index_split_012.html",
+      "spine_index_zero_based": 13,
+      "title": "Dominance Games",
+      "review": "representative substantive passages across chapter",
+      "note": "Dominance, demands for deference, aggression, and reputational attacks."
+    },
+    {
+      "chapter": 8,
+      "epub_href": "index_split_013.html",
+      "spine_index_zero_based": 14,
+      "title": "Male, Grandiose, Humiliated: The Game’s Most Lethal",
+      "review": "representative substantive passages across chapter",
+      "note": "Humiliation, grandiosity, rejection, and violence in Storr’s case studies."
+    },
+    {
+      "chapter": 9,
+      "epub_href": "index_split_014.html",
+      "spine_index_zero_based": 15,
+      "title": "Change the Rules, Change the Player",
+      "review": "representative substantive passages across chapter",
+      "note": "Artificial games, organisational rewards, excessive internal rivalry, and Enron."
+    },
+    {
+      "chapter": 10,
+      "epub_href": "index_split_015.html",
+      "spine_index_zero_based": 16,
+      "title": "The Slot Machine for Status",
+      "review": "representative substantive passages across chapter",
+      "note": "Social media reward design and unpredictable reinforcement of status seeking."
+    },
+    {
+      "chapter": 11,
+      "epub_href": "index_split_016.html",
+      "spine_index_zero_based": 17,
+      "title": "The Flaw",
+      "review": "full extracted chapter text",
+      "note": "Unsatisfied ambition, adaptation, flattery, leadership, and suppressed dissent."
+    },
+    {
+      "chapter": 12,
+      "epub_href": "index_split_017.html",
+      "spine_index_zero_based": 18,
+      "title": "The Universal Prejudice",
+      "review": "representative substantive passages across chapter",
+      "note": "Resentment toward elites; formal rank can differ from esteem in other people’s minds."
+    },
+    {
+      "chapter": 13,
+      "epub_href": "index_split_018.html",
+      "spine_index_zero_based": 19,
+      "title": "Living the Dream",
+      "review": "representative substantive passages across chapter",
+      "note": "Group identification and the status drawn from collective success."
+    },
+    {
+      "chapter": 14,
+      "epub_href": "index_split_019.html",
+      "spine_index_zero_based": 20,
+      "title": "Subjugation, Revolution, Civilisation",
+      "review": "representative substantive passages across chapter",
+      "note": "Hierarchy, imposed roles, religion, revolution, and perceived loss of rightful standing."
+    },
+    {
+      "chapter": 15,
+      "epub_href": "index_split_020.html",
+      "spine_index_zero_based": 21,
+      "title": "Making a Player",
+      "review": "representative substantive passages across chapter",
+      "note": "Personality, development, adolescence, group entry, and gradual professional corruption."
+    },
+    {
+      "chapter": 16,
+      "epub_href": "index_split_021.html",
+      "spine_index_zero_based": 22,
+      "title": "Believing the Dream",
+      "review": "representative substantive passages across chapter",
+      "note": "Belief as membership and status; Maranda Dynda’s anti-vaccination involvement."
+    },
+    {
+      "chapter": 17,
+      "epub_href": "index_split_022.html",
+      "spine_index_zero_based": 23,
+      "title": "Goldrush!",
+      "review": "representative substantive passages across chapter",
+      "note": "Status rewards and the Satanic Panic; institutional authority and sacred symbols."
+    },
+    {
+      "chapter": 18,
+      "epub_href": "index_split_023.html",
+      "spine_index_zero_based": 24,
+      "title": "War Games",
+      "review": "representative substantive passages across chapter",
+      "note": "Beliefs as group boundaries; conflict, motivated reasoning, and the attraction of collective victory."
+    },
+    {
+      "chapter": 19,
+      "epub_href": "index_split_024.html",
+      "spine_index_zero_based": 25,
+      "title": "The Tyranny of the Cousins",
+      "review": "representative substantive passages across chapter",
+      "note": "Collective enforcement, informal control, and online mobbing."
+    },
+    {
+      "chapter": 20,
+      "epub_href": "index_split_025.html",
+      "spine_index_zero_based": 26,
+      "title": "Victims, Warriors, Witches",
+      "review": "representative substantive passages across chapter",
+      "note": "Group threat, escalation, purity competition, and denunciation."
+    },
+    {
+      "chapter": 21,
+      "epub_href": "index_split_026.html",
+      "spine_index_zero_based": 27,
+      "title": "Lost in a Dream",
+      "review": "representative substantive passages across chapter",
+      "note": "Tight and loose cultures, cult dependence, and Heaven’s Gate."
+    },
+    {
+      "chapter": 22,
+      "epub_href": "index_split_027.html",
+      "spine_index_zero_based": 28,
+      "title": "Status Generating Machines",
+      "review": "representative substantive passages across chapter",
+      "note": "Groups and leaders as sources of recognition; national humiliation and the Nazi movement."
+    },
+    {
+      "chapter": 23,
+      "epub_href": "index_split_029.html",
+      "spine_index_zero_based": 30,
+      "title": "Annihilation Part Two",
+      "review": "representative substantive passages across chapter",
+      "note": "National standing, moralised violence, humiliation, and genocidal cruelty.",
+      "heading_epub_href": "index_split_028.html"
+    },
+    {
+      "chapter": 24,
+      "epub_href": "index_split_030.html",
+      "spine_index_zero_based": 31,
+      "title": "The Road Out of Hell",
+      "review": "representative substantive passages across chapter",
+      "note": "Historical changes in kinship and institutions; Republic of Letters, knowledge sharing, and success games."
+    },
+    {
+      "chapter": 25,
+      "epub_href": "index_split_031.html",
+      "spine_index_zero_based": 32,
+      "title": "The Neoliberal Self",
+      "review": "representative substantive passages across chapter",
+      "note": "Individual achievement, perfectionism, work, unequal rewards, and dissatisfaction."
+    },
+    {
+      "chapter": 26,
+      "epub_href": "index_split_032.html",
+      "spine_index_zero_based": 33,
+      "title": "Fairness, Unfairness",
+      "review": "representative substantive passages across chapter",
+      "note": "Fair opportunity, discrimination, class codes, mobility, and multiple sources of advantage."
+    },
+    {
+      "chapter": 27,
+      "epub_href": "index_split_033.html",
+      "spine_index_zero_based": 34,
+      "title": "When Dreams Collide",
+      "review": "representative substantive passages across chapter",
+      "note": "Competing accounts of exclusion and declining status in contemporary political conflict."
+    },
+    {
+      "chapter": 28,
+      "epub_href": "index_split_034.html",
+      "spine_index_zero_based": 35,
+      "title": "The Parable of the Communists",
+      "review": "representative substantive passages across chapter",
+      "note": "Soviet attempts to eliminate hierarchy, coercion, new elites, privilege, and renewed material rewards."
+    },
+    {
+      "chapter": 29,
+      "epub_href": "index_split_035.html",
+      "spine_index_zero_based": 36,
+      "title": "Seven Rules of the Status Game",
+      "review": "full extracted chapter text",
+      "note": "Seven recommendations, from warmth and competence to multiple commitments, trade-offs, originality, and awareness."
+    },
+    {
+      "part": "A Note on My Method",
+      "epub_href": "index_split_036.html",
+      "review": "full extracted text; author acknowledges limits, disagreement, and potentially superseded findings"
+    }
+  ],
+  "exclusions": [
+    {
+      "epub_hrefs": [
+        "index_split_037.html",
+        "index_split_038.html",
+        "index_split_039.html"
+      ],
+      "reason": "Endnotes and bibliography not systematically reviewed or independently verified; no new outside research added."
+    },
+    {
+      "epub_hrefs": [
+        "titlepage.xhtml",
+        "index_split_002.html",
+        "index_split_003.html",
+        "index_split_040.html",
+        "index_split_041.html",
+        "index_split_042.html",
+        "index_split_043.html",
+        "index_split_044.html"
+      ],
+      "reason": "Cover, dedication, epigraph, index, acknowledgements, author biography, other works, and publisher details excluded from substantive summary."
+    }
+  ],
+  "limitations": [
+    "Reflowable EPUB supplied instead of PDF: provenance uses source chapter/document locations and has no fixed page mapping.",
+    "Chapter-spanning review was selective; chapter coverage does not assert that every paragraph was read.",
+    "Native XHTML extraction required no OCR. Initial extraction of headings, paragraphs, and list items omitted some standalone block text. Body-text audit and follow-up inspection recovered the substantial omitted passages in chapters 4 and 28; small token differences elsewhere may include inline word splits or navigation text.",
+    "Historical and psychological explanations are attributed to Storr; this summary does not independently validate the cited research or update it beyond the supplied 2021 edition."
+  ],
+  "reading_time": {
+    "words": 2235,
+    "words_per_minute": 200,
+    "minutes": 12,
+    "included": "synopsis, section titles, and section bodies"
+  },
+  "sections": [
+    {
+      "title": "We need both belonging and respect",
+      "supporting_locations": [
+        {
+          "chapter": 1,
+          "epub_href": "index_split_006.html",
+          "spine_index_zero_based": 7
+        },
+        {
+          "chapter": 2,
+          "epub_href": "index_split_007.html",
+          "spine_index_zero_based": 8
+        }
+      ],
+      "support": "Distinction between connection and status; Ben Gunn’s prison role and fear of losing local standing."
+    },
+    {
+      "title": "Dominance, virtue, and success offer different routes upward",
+      "supporting_locations": [
+        {
+          "chapter": 5,
+          "epub_href": "index_split_010.html",
+          "spine_index_zero_based": 11
+        },
+        {
+          "chapter": 6,
+          "epub_href": "index_split_011.html",
+          "spine_index_zero_based": 12
+        },
+        {
+          "chapter": 7,
+          "epub_href": "index_split_012.html",
+          "spine_index_zero_based": 13
+        }
+      ],
+      "support": "Definitions and overlap of three strategies; prestige, social learning, and influence."
+    },
+    {
+      "title": "Every group teaches its own definition of worth",
+      "supporting_locations": [
+        {
+          "chapter": 3,
+          "epub_href": "index_split_008.html",
+          "spine_index_zero_based": 9
+        },
+        {
+          "chapter": 4,
+          "epub_href": "index_split_009.html",
+          "spine_index_zero_based": 10
+        },
+        {
+          "chapter": 15,
+          "epub_href": "index_split_020.html",
+          "spine_index_zero_based": 21
+        },
+        {
+          "chapter": 26,
+          "epub_href": "index_split_032.html",
+          "spine_index_zero_based": 33
+        }
+      ],
+      "support": "Locally learned symbols and rules, personality and developmental constraints, and entry barriers."
+    },
+    {
+      "title": "The rewards around us can change our behaviour",
+      "supporting_locations": [
+        {
+          "chapter": 9,
+          "epub_href": "index_split_014.html",
+          "spine_index_zero_based": 15
+        },
+        {
+          "chapter": 10,
+          "epub_href": "index_split_015.html",
+          "spine_index_zero_based": 16
+        },
+        {
+          "chapter": 15,
+          "epub_href": "index_split_020.html",
+          "spine_index_zero_based": 21
+        }
+      ],
+      "support": "Enron and internal rivalry, reinforcement on social media, and gradual normalisation of unethical billing."
+    },
+    {
+      "title": "Status gains rarely deliver permanent satisfaction",
+      "supporting_locations": [
+        {
+          "chapter": 11,
+          "epub_href": "index_split_016.html",
+          "spine_index_zero_based": 17
+        }
+      ],
+      "support": "McCartney’s credit dispute, never-satiated status, leader flattery, and the value of dissent."
+    },
+    {
+      "title": "Beliefs can secure membership as well as explain reality",
+      "supporting_locations": [
+        {
+          "chapter": 3,
+          "epub_href": "index_split_008.html",
+          "spine_index_zero_based": 9
+        },
+        {
+          "chapter": 16,
+          "epub_href": "index_split_021.html",
+          "spine_index_zero_based": 22
+        },
+        {
+          "chapter": 17,
+          "epub_href": "index_split_022.html",
+          "spine_index_zero_based": 23
+        },
+        {
+          "chapter": 18,
+          "epub_href": "index_split_023.html",
+          "spine_index_zero_based": 24
+        }
+      ],
+      "support": "Self-serving reasoning; Maranda Dynda, anti-vaccination group rewards, Satanic Panic, and intergroup argument."
+    },
+    {
+      "title": "Threat can turn loyalty into coercion",
+      "supporting_locations": [
+        {
+          "chapter": 8,
+          "epub_href": "index_split_013.html",
+          "spine_index_zero_based": 14
+        },
+        {
+          "chapter": 19,
+          "epub_href": "index_split_024.html",
+          "spine_index_zero_based": 25
+        },
+        {
+          "chapter": 20,
+          "epub_href": "index_split_025.html",
+          "spine_index_zero_based": 26
+        },
+        {
+          "chapter": 21,
+          "epub_href": "index_split_026.html",
+          "spine_index_zero_based": 27
+        },
+        {
+          "chapter": 22,
+          "epub_href": "index_split_027.html",
+          "spine_index_zero_based": 28
+        },
+        {
+          "chapter": 23,
+          "epub_href": "index_split_029.html",
+          "spine_index_zero_based": 30
+        },
+        {
+          "chapter": 28,
+          "epub_href": "index_split_034.html",
+          "spine_index_zero_based": 35
+        }
+      ],
+      "support": "Humiliation and grandiosity, tightness and purity, cult dependence, Nazism, and Soviet hierarchies."
+    },
+    {
+      "title": "Progress depends on making useful contributions prestigious",
+      "supporting_locations": [
+        {
+          "chapter": 24,
+          "epub_href": "index_split_030.html",
+          "spine_index_zero_based": 31
+        },
+        {
+          "chapter": 25,
+          "epub_href": "index_split_031.html",
+          "spine_index_zero_based": 32
+        },
+        {
+          "chapter": 26,
+          "epub_href": "index_split_032.html",
+          "spine_index_zero_based": 33
+        },
+        {
+          "chapter": 27,
+          "epub_href": "index_split_033.html",
+          "spine_index_zero_based": 34
+        }
+      ],
+      "support": "Republic of Letters and knowledge rewards, achievement pressure, unequal opportunity, and political grievances."
+    },
+    {
+      "title": "Earn prestige and keep more than one source of identity",
+      "supporting_locations": [
+        {
+          "chapter": 29,
+          "epub_href": "index_split_035.html",
+          "spine_index_zero_based": 36
+        }
+      ],
+      "support": "Closing recommendations one through three: personal conduct, respect for others, and a hierarchy of multiple games."
+    },
+    {
+      "title": "Judge less, consider trade-offs, and remember the game",
+      "supporting_locations": [
+        {
+          "chapter": 29,
+          "epub_href": "index_split_035.html",
+          "spine_index_zero_based": 36
+        }
+      ],
+      "support": "Closing recommendations four through seven: moral restraint, trade-offs, originality, and awareness of constructed status stories."
+    }
+  ],
+  "import": {
+    "performed": false,
+    "reason": "User requested summarisation; no local library import requested."
+  }
+}
