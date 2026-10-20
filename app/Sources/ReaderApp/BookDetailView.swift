@@ -100,7 +100,7 @@ struct BookDetailView: View {
                     if store.state(book).completed { store.update(book) { $0.section = 0; $0.completed = false } }
                     reading = true
                 } label: { Label(store.state(book).completed ? "Read again" : store.state(book).lastReadAt != nil ? "Continue reading" : "Start reading", systemImage: "book") }
-                    .buttonStyle(.borderedProminent).controlSize(.large)
+                    .buttonStyle(.borderedProminent).tint(Color.ink).foregroundStyle(Color.paper).controlSize(.large)
                 Button {
                     store.update(book) { $0.saved.toggle() }
                 } label: { Image(systemName: store.state(book).saved ? "bookmark.fill" : "bookmark") }
@@ -225,7 +225,7 @@ struct ReaderView: View {
                             else { store.update(book, location: location) { $0.completed = true } }
                         } else { move(1) }
                     } label: { Label(index == sections.count - 1 ? (state.completed ? "Done" : "Finish") : (twoPages ? "Next section" : "Next"), systemImage: "arrow.right") }
-                    .buttonStyle(.borderedProminent).disabled(sections.isEmpty)
+                    .buttonStyle(.borderedProminent).tint(Color.ink).foregroundStyle(Color.paper).disabled(sections.isEmpty)
                 }.padding(.horizontal, 24).padding(.vertical, controlsVisible ? 20 : 10).frame(maxWidth: 750)
             }
             .background(theme == "Sepia" ? Color(hex: "F4ECD8") : Color.paper)
