@@ -1,4 +1,6 @@
-.PHONY: server seed demo test mac ios clean
+.PHONY: server seed demo test mac ios update-devices clean
+update-devices:
+	rtk proxy python3 scripts/update_devices.py
 server:
 	cd backend && go run ./cmd/library serve
 seed:

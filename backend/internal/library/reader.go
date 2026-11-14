@@ -94,6 +94,10 @@ func (r ReaderRecord) Validate() error {
 }
 
 func (s *Store) Sync(ctx context.Context, incoming []ReaderRecord) ([]ReaderRecord, error) {
+	return s.syncUser(ctx, "legacy", incoming)
+}
+
+func (s *Store) syncUser(ctx context.Context, userID string, incoming []ReaderRecord) ([]ReaderRecord, error) {
 	for _, r := range incoming {
 		if err := r.Validate(); err != nil {
 			return nil, err
@@ -106,14 +110,14 @@ func (s *Store) Sync(ctx context.Context, incoming []ReaderRecord) ([]ReaderReco
 	defer tx.Rollback()
 	for _, r := range incoming {
 		raw, _ := json.Marshal(r)
-		_, err = tx.ExecContext(ctx, `INSERT INTO reader_records(id,document,updated_at,device_id) VALUES(?,?,?,?)
-   ON CONFLICT(id) DO UPDATE SET document=excluded.document,updated_at=excluded.updated_at,device_id=excluded.device_id
-   WHERE excluded.updated_at>reader_records.updated_at OR (excluded.updated_at=reader_records.updated_at AND excluded.device_id>reader_records.device_id)`, r.ID, string(raw), r.UpdatedAt, r.DeviceID)
+		_, err = tx.ExecContext(ctx, `INSERT INTO user_reader_records(user_id,id,document,updated_at,device_id) VALUES(?,?,?,?,?)
+   ON CONFLICT(user_id,id) DO UPDATE SET document=excluded.document,updated_at=excluded.updated_at,device_id=excluded.device_id
+   WHERE excluded.updated_at>user_reader_records.updated_at OR (excluded.updated_at=user_reader_records.updated_at AND excluded.device_id>user_reader_records.device_id)`, userID, r.ID, string(raw), r.UpdatedAt, r.DeviceID)
 		if err != nil {
 			return nil, err
 		}
 	}
-	rows, err := tx.QueryContext(ctx, "SELECT document FROM reader_records ORDER BY id")
+	rows, err := tx.QueryContext(ctx, "SELECT document FROM user_reader_records WHERE user_id=? ORDER BY id", userID)
 	if err != nil {
 		return nil, err
 	}

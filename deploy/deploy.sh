@@ -5,8 +5,9 @@ cd /srv/margin/deploy
 # Build before touching the running service. Serialize manual and CI deployments.
 exec 9>/srv/margin/deploy/.deploy.lock
 flock -w 900 9
+docker volume create margin_codex_auth >/dev/null
 docker compose config --quiet
-docker compose build api
+docker compose build api worker
 
 # SQLite online backup includes committed WAL data while the service is running.
 if docker compose ps --status running --services | grep -qx api; then

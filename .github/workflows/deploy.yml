@@ -48,7 +48,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
       - name: Transfer deployment files
         run: |
-          rsync -az --delete --exclude data --exclude library --exclude '*_test.go' \
+          rsync -az --delete --exclude /data --exclude /library --exclude '*_test.go' \
             -e 'ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' \
             backend/ margin-deploy@69.12.83.46:/srv/margin/backend/
           rsync -az -e 'ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' \

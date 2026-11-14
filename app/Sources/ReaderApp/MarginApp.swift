@@ -8,6 +8,9 @@ import SwiftUI
     var body: some Scene {
         WindowGroup {
             LibraryView().environment(store)
+                .safeAreaInset(edge: .bottom) {
+                    if !store.narration.key.isEmpty { NarrationMiniPlayer(player: store.narration) }
+                }
                 .tint(Color.ink)
                 .frame(minWidth: 320, minHeight: 500)
         }
@@ -35,6 +38,9 @@ final class MarginApplicationDelegate: NSObject, NSApplicationDelegate {
 #endif
 
 extension Color {
+    static let surface = Color(light: 0xFFFFFF, dark: 0x242B26)
+    static let line = Color(light: 0xE5E7DD, dark: 0x374139)
+    static let forest = Color(hex: "#193E32")
     static let paper = Color(light: 0xFAF9F5, dark: 0x191D1B)
     static let ink = Color(light: 0x193E32, dark: 0xDCEBD1)
     static let leaf = Color(light: 0xE7EDDF, dark: 0x2C382E)

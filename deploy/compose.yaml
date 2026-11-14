@@ -4,13 +4,48 @@ services:
     build: ../backend
     restart: unless-stopped
     environment:
-      LIBRARY_TOKEN: ${LIBRARY_TOKEN:?Set LIBRARY_TOKEN in .env}
+      LIBRARY_TOKEN: ${LIBRARY_TOKEN:-}
+      ZLIBRARY_PROXY: ${ZLIBRARY_PROXY:-}
+      ZLIBRARY_MIRROR: ${ZLIBRARY_MIRROR:-}
+      ZLIBRARY_EMAIL: ${ZLIBRARY_EMAIL:-}
+      ZLIBRARY_PASSWORD: ${ZLIBRARY_PASSWORD:-}
     volumes:
       - ./data:/data
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  worker:
+    build:
+      context: ../backend
+      dockerfile: processing/Dockerfile
+    restart: unless-stopped
+    environment:
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      CODEX_MODEL: ${CODEX_MODEL:-}
+      OCR_LANGUAGES: ${OCR_LANGUAGES:-eng}
+      KOKORO_VOICE: ${KOKORO_VOICE:-af_heart}
+      ELEVENLABS_VOICE: ${ELEVENLABS_VOICE:-JBFqnCBsd6RMkjVDRZzb}
+      ELEVENLABS_MODEL: ${ELEVENLABS_MODEL:-eleven_multilingual_v2}
+      ALIGNMENT_MODEL: ${ALIGNMENT_MODEL:-base}
+    volumes:
+      - ./data:/data
+      - codex_auth:/home/worker/.codex
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 1200m
+    cpus: 1.0
+    depends_on:
+      api:
+        condition: service_healthy
     logging:
       driver: json-file
       options:
@@ -37,3 +72,6 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+  codex_auth:
+    external: true
+    name: margin_codex_auth

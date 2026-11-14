@@ -18,6 +18,7 @@ struct SourceReader: View {
     @State private var results: [PDFSelection] = []
     @State private var resultIndex = 0
     @State private var editing: ReaderRecord?
+    @State private var selectedHighlight: ReaderRecord?
     @State private var clock = ReadingClock()
     @State private var showNotebook = false
     @State private var controlsVisible = true
@@ -29,7 +30,7 @@ struct SourceReader: View {
             VStack(spacing: 0) {
                 if let document {
                     if controlsVisible { controls(document) }
-                    PDFCanvas(document: document, continuous: continuous, twoPages: twoPages, page: $page, selection: $selection, annotations: store.annotations(bookID: book.id, location: .pdf).filter { $0.sourceHash.isEmpty || $0.sourceHash == book.source?.sha256 })
+                    PDFCanvas(document: document, continuous: continuous, twoPages: twoPages, page: $page, selection: $selection, annotations: store.annotations(bookID: book.id, location: .pdf).filter { $0.sourceHash.isEmpty || $0.sourceHash == book.source?.sha256 }, onHighlightTap: { selectedHighlight = $0 })
                         .simultaneousGesture(TapGesture().onEnded { clock.touch() })
                         .simultaneousGesture(DragGesture(minimumDistance: 1).onChanged { _ in clock.touch() })
                     HStack {
@@ -79,6 +80,10 @@ struct SourceReader: View {
                 resultIndex = 0; if !results.isEmpty { showResult() }
             }
             .sheet(item: $editing) { record in AnnotationEditor(record: record).environment(store) }
+            .popover(item: $selectedHighlight) { record in
+                HighlightSelectionMenu(record: record) { editing = $0 }
+                    .environment(store)
+            }
             .sheet(isPresented: $showNotebook) { NavigationStack { NotebookView(bookID: book.id).toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { showNotebook = false } } } }.environment(store) }
         }
         #if os(iOS)
@@ -150,6 +155,7 @@ struct SourceReader: View {
 }
 
 private final class PDFCoordinator: NSObject {
+    var highlightTapped: ((ReaderRecord) -> Void)?
     var pageChanged: ((Int) -> Void)?
     var selectionChanged: ((PDFSelection?) -> Void)?
     var observers: [NSObjectProtocol] = []
@@ -160,12 +166,40 @@ private final class PDFCoordinator: NSObject {
         renderedDocument = document; renderedAnnotations = annotations; return true
     }
     func attach(_ view: PDFView) {
+        #if os(macOS)
+        view.addGestureRecognizer(NSClickGestureRecognizer(target: self, action: #selector(tapHighlight(_:))))
+        #else
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapHighlight(_:)))
+        tap.cancelsTouchesInView = false
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+        #endif
         observers.append(NotificationCenter.default.addObserver(forName: .PDFViewPageChanged, object: view, queue: .main) { [weak self, weak view] _ in
             guard let view, let document = view.document, let page = view.currentPage else { return }
             self?.pageChanged?(document.index(for: page))
         })
         observers.append(NotificationCenter.default.addObserver(forName: .PDFViewSelectionChanged, object: view, queue: .main) { [weak self, weak view] _ in self?.selectionChanged?(view?.currentSelection) })
     }
+    private func openHighlight(at point: CGPoint, in view: PDFView) {
+        guard let page = view.page(for: point, nearest: false) else { return }
+        let location = view.convert(point, to: page)
+        guard let annotation = page.annotations.reversed().first(where: {
+            $0.userName == "Margin" && $0.bounds.contains(location)
+        }), let id = annotation.value(forAnnotationKey: PDFAnnotationKey(rawValue: "MarginRecordID")) as? String,
+              let record = renderedAnnotations.first(where: { $0.id == id }) else { return }
+        highlightTapped?(record)
+    }
+    #if os(macOS)
+    @objc private func tapHighlight(_ gesture: NSClickGestureRecognizer) {
+        guard let view = gesture.view as? PDFView else { return }
+        openHighlight(at: gesture.location(in: view), in: view)
+    }
+    #else
+    @objc private func tapHighlight(_ gesture: UITapGestureRecognizer) {
+        guard gesture.state == .ended, let view = gesture.view as? PDFView else { return }
+        openHighlight(at: gesture.location(in: view), in: view)
+    }
+    #endif
     deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) } }
 }
 
@@ -189,6 +223,7 @@ private func updatePDF(_ view: PDFView, document: PDFDocument, page: Int, select
             for line in selection.selectionsByLine() {
                 let annotation = PDFAnnotation(bounds: line.bounds(for: pdfPage), forType: .highlight, withProperties: nil)
                 annotation.userName = "Margin"; annotation.contents = record.text
+                annotation.setValue(record.id, forAnnotationKey: PDFAnnotationKey(rawValue: "MarginRecordID"))
                 annotation.color = (record.color == "green" ? PlatformColor.systemGreen : record.color == "pink" ? PlatformColor.systemPink : PlatformColor.systemYellow).withAlphaComponent(0.35)
                 pdfPage.addAnnotation(annotation)
             }
@@ -204,12 +239,14 @@ private struct PDFCanvas: NSViewRepresentable {
     @Binding var page: Int
     @Binding var selection: PDFSelection?
     let annotations: [ReaderRecord]
+    let onHighlightTap: (ReaderRecord) -> Void
     func makeCoordinator() -> PDFCoordinator { PDFCoordinator() }
     func makeNSView(context: Context) -> PDFView { let view = PDFView(); view.autoScales = true; view.displayMode = .singlePageContinuous; context.coordinator.attach(view); return view }
     func updateNSView(_ view: PDFView, context: Context) {
         let displayMode: PDFDisplayMode = twoPages ? (continuous ? .twoUpContinuous : .twoUp) : (continuous ? .singlePageContinuous : .singlePage)
         view.displaysAsBook = false
         if view.displayMode != displayMode { view.displayMode = displayMode; view.autoScales = true }
+        context.coordinator.highlightTapped = onHighlightTap
         context.coordinator.pageChanged = { value in if page != value { DispatchQueue.main.async { page = value } } }
         context.coordinator.selectionChanged = { value in DispatchQueue.main.async { selection = value } }
         updatePDF(view, document: document, page: page, selection: selection, annotations: annotations, redraw: context.coordinator.needsRedraw(document: document, annotations: annotations))
@@ -223,15 +260,23 @@ private struct PDFCanvas: UIViewRepresentable {
     @Binding var page: Int
     @Binding var selection: PDFSelection?
     let annotations: [ReaderRecord]
+    let onHighlightTap: (ReaderRecord) -> Void
     func makeCoordinator() -> PDFCoordinator { PDFCoordinator() }
     func makeUIView(context: Context) -> PDFView { let view = PDFView(); view.autoScales = true; view.displayMode = .singlePageContinuous; context.coordinator.attach(view); return view }
     func updateUIView(_ view: PDFView, context: Context) {
         let displayMode: PDFDisplayMode = twoPages ? (continuous ? .twoUpContinuous : .twoUp) : (continuous ? .singlePageContinuous : .singlePage)
         view.displaysAsBook = false
         if view.displayMode != displayMode { view.displayMode = displayMode; view.autoScales = true }
+        context.coordinator.highlightTapped = onHighlightTap
         context.coordinator.pageChanged = { value in if page != value { DispatchQueue.main.async { page = value } } }
         context.coordinator.selectionChanged = { value in DispatchQueue.main.async { selection = value } }
         updatePDF(view, document: document, page: page, selection: selection, annotations: annotations, redraw: context.coordinator.needsRedraw(document: document, annotations: annotations))
     }
+}
+#endif
+
+#if os(iOS)
+extension PDFCoordinator: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }
 #endif

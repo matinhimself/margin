@@ -2,6 +2,7 @@ package library
 
 import (
 	"bytes"
+	"context"
 	"crypto/subtle"
 	"encoding/json"
 	"errors"
@@ -13,9 +14,17 @@ import (
 	"strings"
 )
 
-func Handler(store *Store, token string) http.Handler {
+func Handler(store *Store, token string, catalogs ...*ZLibrary) http.Handler {
 	mux := http.NewServeMux()
 	registerReaderRoutes(mux, store)
+	registerNarrationRoutes(mux, store)
+	registerAuthRoutes(mux, store)
+	registerProcessingRoutes(mux, store)
+	var catalog *ZLibrary
+	if len(catalogs) > 0 {
+		catalog = catalogs[0]
+	}
+	registerZLibraryRoutes(mux, store, catalog)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) { writeJSON(w, 200, map[string]string{"status": "ok"}) })
 	mux.HandleFunc("GET /v1/books", func(w http.ResponseWriter, r *http.Request) {
 		books, err := store.List(r.Context())
@@ -88,9 +97,34 @@ func Handler(store *Store, token string) http.Handler {
 			writeError(w, 403, "browser-origin writes are not allowed")
 			return
 		}
-		if token != "" && r.URL.Path != "/healthz" && subtle.ConstantTimeCompare([]byte(r.Header.Get("Authorization")), []byte("Bearer "+token)) != 1 {
-			writeError(w, 401, "a valid bearer token is required")
-			return
+		public := r.URL.Path == "/healthz" || (r.Method == http.MethodPost && (r.URL.Path == "/v1/auth/login" || r.URL.Path == "/v1/auth/signup"))
+		if !public {
+			var user User
+			authorization := r.Header.Get("Authorization")
+			if token != "" && subtle.ConstantTimeCompare([]byte(authorization), []byte("Bearer "+token)) == 1 {
+				user = User{ID: "legacy", Role: "admin"}
+			} else {
+				if !strings.HasPrefix(authorization, "Bearer ") || len(authorization) > 256 {
+					writeError(w, 401, "a valid bearer token is required")
+					return
+				}
+				var err error
+				user, err = store.authenticate(r.Context(), strings.TrimPrefix(authorization, "Bearer "))
+				if err != nil {
+					authFailure(w, err)
+					return
+				}
+			}
+			adminOnly := strings.HasPrefix(r.URL.Path, "/v1/admin/") || (strings.HasPrefix(r.URL.Path, "/v1/books/") && r.Method != http.MethodGet && r.Method != http.MethodHead)
+			if adminOnly && user.Role != "admin" {
+				writeError(w, 403, "admin access is required")
+				return
+			}
+			var name string
+			if err := store.db.QueryRowContext(r.Context(), "SELECT display_name FROM user_profiles WHERE user_id=?", user.ID).Scan(&name); err == nil {
+				user.DisplayName = name
+			}
+			r = r.WithContext(context.WithValue(r.Context(), userContextKey{}, user))
 		}
 		mux.ServeHTTP(w, r)
 	})
@@ -122,7 +156,7 @@ func registerReaderRoutes(mux *http.ServeMux, store *Store) {
 				return
 			}
 		}
-		records, err := store.Sync(r.Context(), input.Records)
+		records, err := store.syncUser(r.Context(), currentUser(r).ID, input.Records)
 		if err != nil {
 			internalError(w, err)
 			return

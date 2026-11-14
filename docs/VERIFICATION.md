@@ -25,3 +25,11 @@ Physical-device signing/install, App Store distribution, and execution on the mi
 - Verified CLI PDF attachment and the PDF-to-Margin validator against exported content containing full chapters and source metadata.
 
 The personal library remains empty, with its updated server at `http://127.0.0.1:8787`. Sync shares one personal library through this server; it is not an iCloud or multi-account service. Source search and highlight creation require selectable PDF text. Device clocks affect same-record conflict ordering. Text section references remain positional across content reordering.
+
+## Integrated discovery (2026-10-30)
+
+- Native iPhone navigation now has Discover, Library, Notebook, and Activity tabs. Discovery supports topic browsing, live search, language selection, grouped editions, high-resolution covers, ready-book links, and a 10/30-minute selection sheet.
+- Inspected Discover, the edition/length sheet, and Activity on the iPhone 17 simulator against the live backend. Verified the length selection updates its action and topic changes load new results.
+- Twenty Swift tests pass, including edition grouping, repeated-page deduplication, author-name order, and decoding older catalog responses. Go race tests and vet pass; integration tests verify processing metadata and language filtering.
+- Deployed API and worker support for catalog IDs, titles, authors, and covers, including migration of existing jobs. Live production discovery returned 51 English editions and 50 cover URLs.
+- Signed release build 3 was installed wirelessly on the paired iPhone. Installation succeeded; subsequent remote launch/inspection encountered intermittent device connection timeouts.

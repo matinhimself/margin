@@ -22,16 +22,26 @@ func Open(path string) (*Store, error) {
 	_, err = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
  CREATE TABLE IF NOT EXISTS books (id TEXT PRIMARY KEY, document TEXT NOT NULL, updated_at TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS reader_records (id TEXT PRIMARY KEY, document TEXT NOT NULL, updated_at INTEGER NOT NULL, device_id TEXT NOT NULL);
+ CREATE TABLE IF NOT EXISTS narrations (book_id TEXT NOT NULL, section_index INTEGER NOT NULL, sha256 TEXT NOT NULL, audio BLOB NOT NULL, PRIMARY KEY(book_id,section_index));
  CREATE TABLE IF NOT EXISTS sources (book_id TEXT PRIMARY KEY, filename TEXT NOT NULL, sha256 TEXT NOT NULL, pdf BLOB NOT NULL);`)
 	if err != nil {
 		db.Close()
 		return nil, fmt.Errorf("initialize database: %w", err)
 	}
-	return &Store{db: db}, nil
+	store := &Store{db: db}
+	if err := store.initAuth(); err != nil {
+		db.Close()
+		return nil, fmt.Errorf("initialize accounts: %w", err)
+	}
+	if err := store.initProcessing(); err != nil {
+		db.Close()
+		return nil, fmt.Errorf("initialize processing: %w", err)
+	}
+	return store, nil
 }
 func (s *Store) Close() error { return s.db.Close() }
 func (s *Store) List(ctx context.Context) ([]Book, error) {
-	rows, err := s.db.QueryContext(ctx, "SELECT b.document, COALESCE(s.filename,''), COALESCE(s.sha256,'') FROM books b LEFT JOIN sources s ON b.id=s.book_id ORDER BY b.updated_at DESC, b.id")
+	rows, err := s.db.QueryContext(ctx, "SELECT b.document, COALESCE(s.filename,''), COALESCE(s.sha256,''), COALESCE(u.user_id,''), COALESCE(u.user_name,'') FROM books b LEFT JOIN sources s ON b.id=s.book_id LEFT JOIN book_uploaders u ON b.id=u.book_id ORDER BY b.updated_at DESC, b.id")
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +50,16 @@ func (s *Store) List(ctx context.Context) ([]Book, error) {
 	for rows.Next() {
 		var raw string
 		var source Source
-		if err := rows.Scan(&raw, &source.Filename, &source.SHA256); err != nil {
+		var uploader Uploader
+		if err := rows.Scan(&raw, &source.Filename, &source.SHA256, &uploader.ID, &uploader.Name); err != nil {
 			return nil, err
 		}
 		var b Book
 		if err := json.Unmarshal([]byte(raw), &b); err != nil {
 			return nil, err
+		}
+		if uploader.ID != "" {
+			b.UploadedBy = &uploader
 		}
 		if source.Filename != "" {
 			b.Source = &source
@@ -57,7 +71,8 @@ func (s *Store) List(ctx context.Context) ([]Book, error) {
 func (s *Store) Get(ctx context.Context, id string) (Book, error) {
 	var raw string
 	var source Source
-	err := s.db.QueryRowContext(ctx, "SELECT b.document, COALESCE(s.filename,''), COALESCE(s.sha256,'') FROM books b LEFT JOIN sources s ON b.id=s.book_id WHERE b.id = ?", id).Scan(&raw, &source.Filename, &source.SHA256)
+	var uploader Uploader
+	err := s.db.QueryRowContext(ctx, "SELECT b.document, COALESCE(s.filename,''), COALESCE(s.sha256,''), COALESCE(u.user_id,''), COALESCE(u.user_name,'') FROM books b LEFT JOIN sources s ON b.id=s.book_id LEFT JOIN book_uploaders u ON b.id=u.book_id WHERE b.id = ?", id).Scan(&raw, &source.Filename, &source.SHA256, &uploader.ID, &uploader.Name)
 	if errors.Is(err, sql.ErrNoRows) {
 		return Book{}, ErrNotFound
 	}
@@ -66,6 +81,9 @@ func (s *Store) Get(ctx context.Context, id string) (Book, error) {
 	}
 	var b Book
 	err = json.Unmarshal([]byte(raw), &b)
+	if uploader.ID != "" {
+		b.UploadedBy = &uploader
+	}
 	if source.Filename != "" {
 		b.Source = &source
 	}
@@ -119,6 +137,15 @@ func (s *Store) Delete(ctx context.Context, id string) error {
 		return ErrNotFound
 	}
 	if _, err = tx.ExecContext(ctx, "DELETE FROM sources WHERE book_id=?", id); err != nil {
+		return err
+	}
+	if _, err = tx.ExecContext(ctx, "DELETE FROM narrations WHERE book_id=?", id); err != nil {
+		return err
+	}
+	if _, err = tx.ExecContext(ctx, "DELETE FROM book_uploaders WHERE book_id=?", id); err != nil {
+		return err
+	}
+	if _, err = tx.ExecContext(ctx, "DELETE FROM processing_provenance WHERE book_id=?", id); err != nil {
 		return err
 	}
 	// Preserve personal notes and history even when a book is removed.

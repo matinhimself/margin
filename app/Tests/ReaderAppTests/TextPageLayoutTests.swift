@@ -1,8 +1,27 @@
 import XCTest
+import LibraryCore
 @testable import ReaderApp
 
 @MainActor
 final class TextPageLayoutTests: XCTestCase {
+    func testHighlightTapIdentityUsesSavedOccurrenceAndSurvivesStaleOffsets() {
+        let text = "Same phrase. Same phrase."
+        var record = ReaderRecord(id: "annotation:test", kind: "annotation")
+        record.quote = "Same phrase"
+        record.offset = 13
+        record.length = 11
+        let attributed = readerAttributedText(text, size: 21, highlights: [record])
+        XCTAssertNil(attributed.attribute(readerHighlightID, at: 0, effectiveRange: nil))
+        XCTAssertEqual(attributed.attribute(readerHighlightID, at: 13, effectiveRange: nil) as? String, record.id)
+
+        record.offset = -1
+        let recovered = readerAttributedText(text, size: 21, highlights: [record])
+        XCTAssertEqual(recovered.attribute(readerHighlightID, at: 0, effectiveRange: nil) as? String, record.id)
+        record.quote = "Removed passage"
+        let removed = readerAttributedText(text, size: 21, highlights: [record])
+        XCTAssertNil(removed.attribute(readerHighlightID, at: 0, effectiveRange: nil))
+    }
+
     #if os(macOS)
     func testSinglePageMeasurementExceedsViewportAndSurvivesWidthProbes() {
         let paragraph = String(repeating: "A long chapter must remain scrollable in a full-screen reader. ", count: 8)
@@ -40,5 +59,19 @@ final class TextPageLayoutTests: XCTestCase {
         XCTAssertGreaterThan(largeFont.count, normal.count)
         XCTAssertGreaterThan(narrow.count, normal.count)
         XCTAssertEqual(TextPageLayout.ranges(text: "", fontSize: 21, size: CGSize(width: 400, height: 600)), [])
+    }
+
+    func testExtraSpacingReflowsWithoutLosingText() {
+        let text = String(repeating: "Keep each passage readable, including café and فارسی.\n\n", count: 80)
+        let size = CGSize(width: 320, height: 400)
+        let normal = TextPageLayout.ranges(text: text, fontSize: 21, size: size)
+        let spaced = TextPageLayout.ranges(text: text, fontSize: 21, size: size, lineSpacing: 16)
+        XCTAssertGreaterThan(spaced.count, normal.count)
+        XCTAssertEqual(spaced.map { (text as NSString).substring(with: $0) }.joined(), text)
+        #if os(macOS)
+        XCTAssertGreaterThan(
+            ReaderTextLayout.size(text: text, fontSize: 21, width: 320, lineSpacing: 16).height,
+            ReaderTextLayout.size(text: text, fontSize: 21, width: 320).height)
+        #endif
     }
 }

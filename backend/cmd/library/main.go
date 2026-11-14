@@ -8,8 +8,8 @@ import (
 	"flag"
 	"fmt"
 	"local/blinkist/internal/library"
+	"local/blinkist/internal/zlibrary"
 	"log"
-	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -34,12 +34,15 @@ func run() error {
 	dbPath := fs.String("db", "data/library.sqlite", "SQLite database path")
 	addr := fs.String("addr", "127.0.0.1:8787", "listen address (use 0.0.0.0:8787 for devices)")
 	file := fs.String("file", "", "JSON array to import")
+	workDir := fs.String("workdir", "data/processing", "private processing work directory")
+	pipeline := fs.String("pipeline", "processing/pipeline.py", "PDF and narration pipeline script")
+	email := fs.String("email", "", "email for the first admin account")
 	bookID := fs.String("book", "", "book ID for attaching a source PDF")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if command != "serve" && command != "import" && command != "attach" {
-		return fmt.Errorf("unknown command %q: use serve, import, or attach", command)
+	if command != "serve" && command != "import" && command != "attach" && command != "admin" && command != "worker" {
+		return fmt.Errorf("unknown command %q: use serve, import, attach, admin, or worker", command)
 	}
 	if err := os.MkdirAll(filepath.Dir(*dbPath), 0755); err != nil {
 		return err
@@ -49,6 +52,19 @@ func run() error {
 		return err
 	}
 	defer store.Close()
+	if command == "worker" {
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return store.RunWorker(ctx, *workDir, *pipeline)
+	}
+	if command == "admin" {
+		user, err := store.BootstrapAdmin(context.Background(), *email, os.Getenv("LIBRARY_ADMIN_PASSWORD"))
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Created admin account %s\n", user.Email)
+		return nil
+	}
 	if command == "attach" {
 		info, err := os.Stat(*file)
 		if err != nil {
@@ -90,15 +106,8 @@ func run() error {
 		return nil
 	}
 	token := os.Getenv("LIBRARY_TOKEN")
-	host, _, err := net.SplitHostPort(*addr)
-	if err != nil {
-		return err
-	}
-	ip := net.ParseIP(host)
-	if (ip == nil || !ip.IsLoopback()) && token == "" {
-		return errors.New("set LIBRARY_TOKEN when listening outside loopback")
-	}
-	server := &http.Server{Addr: *addr, Handler: library.Handler(store, token), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
+
+	server := &http.Server{Addr: *addr, Handler: library.Handler(store, token, library.NewZLibrary(os.Getenv("ZLIBRARY_MIRROR"), os.Getenv("ZLIBRARY_EMAIL"), os.Getenv("ZLIBRARY_PASSWORD"), zlibrary.WithProxyURL(os.Getenv("ZLIBRARY_PROXY")))), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 120 * time.Second, WriteTimeout: 120 * time.Second, IdleTimeout: 60 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	failures := make(chan error, 1)

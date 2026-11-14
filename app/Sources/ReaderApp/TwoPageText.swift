@@ -11,6 +11,8 @@ struct TwoPageText: View {
     let text: String
     let fontSize: Double
     let highlights: [ReaderRecord]
+    var lineSpacing: Double = 9
+    var onHighlightTap: ((ReaderRecord) -> Void)? = nil
     let onSelection: (String, NSRange, Bool) -> Void
     @State private var pages: [NSRange] = []
     @State private var anchor = 0
@@ -18,6 +20,7 @@ struct TwoPageText: View {
     private struct Layout: Equatable {
         let text: String
         let fontSize: Double
+        let lineSpacing: Double
         let width: CGFloat
         let height: CGFloat
     }
@@ -28,7 +31,7 @@ struct TwoPageText: View {
         GeometryReader { geometry in
             let width = max(1, (geometry.size.width - 65) / 2)
             let height = max(1, geometry.size.height - 52)
-            let layout = Layout(text: text, fontSize: fontSize, width: width, height: height)
+            let layout = Layout(text: text, fontSize: fontSize, lineSpacing: lineSpacing, width: width, height: height)
             VStack(spacing: 12) {
                 HStack(alignment: .top, spacing: 32) {
                     page(first, width: width, height: height)
@@ -46,7 +49,7 @@ struct TwoPageText: View {
             }
             .onChange(of: layout, initial: true) { old, new in
                 if old.text != new.text { anchor = 0 }
-                pages = TextPageLayout.ranges(text: new.text, fontSize: new.fontSize, size: CGSize(width: new.width, height: new.height))
+                pages = TextPageLayout.ranges(text: new.text, fontSize: new.fontSize, size: CGSize(width: new.width, height: new.height), lineSpacing: new.lineSpacing)
                 anchor = min(anchor, max((text as NSString).length - 1, 0))
             }
         }
@@ -55,7 +58,9 @@ struct TwoPageText: View {
     @ViewBuilder private func page(_ index: Int, width: CGFloat, height: CGFloat) -> some View {
         if pages.indices.contains(index) {
             let range = pages[index]
-            SelectionText(text: (text as NSString).substring(with: range), fontSize: fontSize, highlights: pageHighlights(range), pageHeight: height) { quote, selected, note in
+            SelectionText(text: (text as NSString).substring(with: range), fontSize: fontSize, highlights: pageHighlights(range), pageHeight: height, lineSpacing: lineSpacing, onHighlightTap: { record in
+                if let original = highlights.first(where: { $0.id == record.id }) { onHighlightTap?(original) }
+            }) { quote, selected, note in
                 onSelection(quote, NSRange(location: range.location + selected.location, length: selected.length), note)
             }
             .frame(width: width, height: height, alignment: .topLeading)
@@ -93,8 +98,8 @@ struct TwoPageText: View {
 }
 
 enum TextPageLayout {
-    static func ranges(text: String, fontSize: Double, size: CGSize) -> [NSRange] {
-        let storage = NSTextStorage(attributedString: readerAttributedText(text, size: fontSize, highlights: []))
+    static func ranges(text: String, fontSize: Double, size: CGSize, lineSpacing: Double = 9) -> [NSRange] {
+        let storage = NSTextStorage(attributedString: readerAttributedText(text, size: fontSize, highlights: [], lineSpacing: lineSpacing))
         let manager = NSLayoutManager()
         storage.addLayoutManager(manager)
         var result: [NSRange] = []

@@ -1,9 +1,34 @@
 import Foundation
 
+public struct NarrationWord: Codable, Hashable, Sendable {
+    public var text: String
+    public var start: Double
+    public var end: Double
+    public var offset: Int
+    public var length: Int
+    public var range: NSRange { NSRange(location: offset, length: length) }
+}
+public struct Narration: Codable, Hashable, Sendable {
+    public var provider: String
+    public var model: String
+    public var voice: String
+    public var sha256: String?
+    public var bodySHA256: String?
+    public var words: [NarrationWord]
+    public func word(at time: Double) -> NarrationWord? {
+        // Binary search keeps cursor updates cheap for full chapters.
+        var low = 0; var high = words.count
+        while low < high { let mid = (low + high) / 2; if words[mid].start <= time { low = mid + 1 } else { high = mid } }
+        guard low > 0, time < words[low - 1].end else { return nil }
+        return words[low - 1]
+    }
+}
+
 public struct Section: Codable, Hashable, Sendable {
     public var title: String
     public var body: String
     public var sourcePage: Int?
+    public var narration: Narration?
     public init(title: String = "", body: String = "", sourcePage: Int? = nil) { self.title = title; self.body = body; self.sourcePage = sourcePage }
 }
 
@@ -26,6 +51,9 @@ public struct Book: Codable, Hashable, Identifiable, Sendable {
     public var updatedAt: String
     public var chapters: [Section]?
     public var source: BookSource?
+    public var uploadedBy: BookUploader?
+    public var language: String?
+    public var coverURL: String?
 
     public init(id: String = UUID().uuidString.lowercased(), title: String = "", author: String = "", subtitle: String = "", category: String = "General", color: String = "#DCE9C9", minutes: Int = 10, synopsis: String = "", sections: [Section] = [Section()], updatedAt: String = "") {
         self.id = id; self.title = title; self.author = author; self.subtitle = subtitle
